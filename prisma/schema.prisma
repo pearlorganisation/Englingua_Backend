@@ -25,7 +25,7 @@ model User {
   gender    String
   age          Int
   mobileNumber String   @unique // Make this unique if needed
-  role         Role     @default(STUDENT) // Default role to CUSTOMER
+  role         Role     @default(STUDENT) // Default role to STUDENT
   blogs     Blog[]   @relation("UserBlogs") // A user can write multiple blogs
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -35,8 +35,8 @@ model Blog {
   id        Int      @id @default(autoincrement())
   title     String
   content   String
-  author    User     @relation(fields: [authorId], references: [id], name: "UserBlogs")
-  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id], name: "UserBlogs") //relation field 
+  authorId  Int // Foreign Key or  scalar field
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
