@@ -1,4 +1,5 @@
 import { users } from "../../../dummyData.js";
+import prisma from "../../utils/prismaClient.js";
 
 const userResolver = {
   Query: {
@@ -9,6 +10,21 @@ const userResolver = {
         throw new Error(`User with id ${id} not found`);
       }
       return user;
+    },
+  },
+
+  Mutation: {
+    createUser: async (_, { input }) => {
+      return await prisma.user.create({
+        data: {
+          name: input.name,
+          email: input.email,
+          password: input.password,
+          gender: input.gender,
+          age: input.age,
+          mobileNumber: input.mobileNumber,
+        },
+      });
     },
   },
 };

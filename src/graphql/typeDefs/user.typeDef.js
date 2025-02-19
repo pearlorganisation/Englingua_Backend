@@ -4,8 +4,9 @@ const userTypeDef = `#graphql
     ADMIN
   }
   type User {
-    _id: ID!
+    id: ID!
     name: String!
+    email: String!
     password: String!
     gender: String!
     age: Int!
@@ -16,6 +17,17 @@ const userTypeDef = `#graphql
    type Query {
     users: [User!]! # Returns a list of users
     user(id: ID!): User # Returns a user by their ID
+  }
+
+  type Mutation { createUser(input: UserInput!): User! }
+
+  input UserInput {
+    name: String!
+    email: String!
+    password: String!
+    gender: String!
+    age: Int!
+    mobileNumber: String!
   }
   `;
 

@@ -3,7 +3,6 @@ import http from "http";
 import cors from "cors";
 import dotenv from "dotenv";
 import { startApolloServer } from "./src/apollo/apolloServer.js"; // Import the Apollo Server startup logic
-import { connectToMongoDB } from "./src/configs/db.js";
 
 dotenv.config();
 
@@ -26,5 +25,4 @@ await startApolloServer(httpServer, app);
 
 // Start the HTTP server
 await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
-await connectToMongoDB();
 console.log(`GraphQL Server ready at http://localhost:${PORT}/graphql`);
