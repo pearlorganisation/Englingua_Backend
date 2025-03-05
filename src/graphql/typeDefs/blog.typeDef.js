@@ -4,11 +4,12 @@ const blogTypeDef = `#graphql
     title: String!
     content: String!
     author: User!
+    authorId: Int!
     createdAt: String!
     updatedAt: String!
   }
   type Mutation {
-    createBlog(title: String!, content: String!, authorId: Int!): Blog!
+    createBlog(title: String!, content: String!, author: String!, authorId: Int!): Blog!
   }
 `;
 

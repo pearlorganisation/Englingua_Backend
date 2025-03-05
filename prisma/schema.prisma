@@ -40,3 +40,54 @@ model Blog {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Program {
+  id          String   @id @default(uuid())
+  title       String // Business English
+  description String
+  categories Category[] 
+  levels Level[]
+  // price       Float
+  // duration    Int     // Duration in hours
+  // instructor  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+model Category {
+  id         String  @id @default(uuid())
+  name       String  // e.g., "Presentation Skills", "Email Writing Skills", "Hospitality"
+  programId  String
+  program    Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  units      Unit[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Level {
+  id         String  @id @default(uuid())
+  name       String  // e.g., "Beginner", "Intermediate", "Advanced"
+  programId  String
+  program    Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  units      Unit[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Unit {
+  id              String   @id @default(uuid()) // Unique identifier
+  title           String   // e.g., "Introductions"
+  discussionTopic String   // e.g., "Introduce yourself"
+  listeningText   String?  // An interview with a consultant
+  readingText     String?  // From small town to global leader
+  languageWork    String[]
+  skills          String[] 
+  caseStudy       String?  // Optional case study
+  levelId    String?
+  level      Level?  @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now()) // Timestamp for record creation
+  updatedAt       DateTime @updatedAt     // Timestamp for last update
+}

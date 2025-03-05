@@ -1,7 +1,8 @@
 import { mergeTypeDefs } from "@graphql-tools/merge";
 import userTypeDef from "./user.typeDef.js";
+import blogTypeDef from "./blog.typeDef.js";
 
-const mergedTypeDefs = mergeTypeDefs([userTypeDef]);
+const mergedTypeDefs = mergeTypeDefs([userTypeDef, blogTypeDef]);
 
 export default mergedTypeDefs;
 

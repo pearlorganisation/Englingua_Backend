@@ -1,17 +1,7 @@
-import { users } from "../../../dummyData.js";
 import prisma from "../../utils/prismaClient.js";
 
 const userResolver = {
-  Query: {
-    users: () => users,
-    user: async (_, { id }) => {
-      const user = users.find((user) => user._id === id);
-      if (!user) {
-        throw new Error(`User with id ${id} not found`);
-      }
-      return user;
-    },
-  },
+  Query: {},
 
   Mutation: {
     createUser: async (_, { input }) => {
