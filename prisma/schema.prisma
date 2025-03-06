@@ -18,7 +18,7 @@ enum Role {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(uuid())
   name      String
   email     String   @unique
   password  String
@@ -32,11 +32,14 @@ model User {
 }
 
 model Blog {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(uuid())
   title     String
   content   String
+  image    String
   author    User     @relation(fields: [authorId], references: [id], name: "UserBlogs") //relation field 
-  authorId  Int // Foreign Key or  scalar field
+  authorId  String // Foreign Key or  scalar field
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -47,22 +50,26 @@ model Program {
   description String
   categories Category[] 
   levels Level[]
-  // price       Float
-  // duration    Int     // Duration in hours
-  // instructor  String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 
 model Category {
-  id         String  @id @default(uuid())
-  name       String  // e.g., "Presentation Skills", "Email Writing Skills", "Hospitality"
-  programId  String
-  program    Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  name       String // Academy, Teacher Zone
+  type       CategoryType // New Enum Field (Program or Blog)
+  programId  String?  // Nullable since a category can belong to a program or a blog
+  program    Program? @relation(fields: [programId], references: [id], onDelete: Cascade)
   units      Unit[]
+  blog       Blog[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+enum CategoryType {
+  PROGRAM
+  BLOG
 }
 
 model Level {

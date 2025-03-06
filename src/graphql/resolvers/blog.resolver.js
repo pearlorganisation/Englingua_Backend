@@ -2,31 +2,20 @@ import prisma from "../../utils/prismaClient.js"; //we can also pass prisma in c
 
 const blogResolver = {
   Mutation: {
-    createBlog: async (_, { title, content, author, authorId }) => {
+    createBlog: async (_, { title, content, image, authorId, categoryId }) => {
       try {
-        // Ensure the author exists
-        const existingUser = await prisma.user.findUnique({
-          where: { id: authorId },
-        });
-
-        if (!existingUser) {
-          throw new Error("Author not found");
-        }
-
-        // Create the blog post
         const newBlog = await prisma.blog.create({
           data: {
             title,
             content,
-            author,
-            authorId: { connect: { id: authorId } }, // Connect to existing user
+            image,
+            author: { connect: { id: authorId } },
+            category: categoryId ? { connect: { id: categoryId } } : undefined,
           },
-          include: { author: true },
         });
-
         return newBlog;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error(`Failed to create blog: ${error.message}`);
       }
     },
   },
