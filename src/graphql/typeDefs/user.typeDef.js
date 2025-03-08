@@ -12,15 +12,25 @@ const userTypeDef = `#graphql
     age: Int!
     mobileNumber: String!
     role: Role!
+    blogs: [Blog!]!
     
   }
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
    type Query {
     users: [User!]! # Returns a list of users
     user(id: ID!): User # Returns a user by their ID
+    me: User # Returns the currently authenticated user
   }
 
-  type Mutation { createUser(input: UserInput!): User! }
-
+  type Mutation {
+    createUser(input: UserInput!): User!
+    login(email: String!, password: String!): AuthPayload!
+    }
+  
   input UserInput {
     name: String!
     email: String!
