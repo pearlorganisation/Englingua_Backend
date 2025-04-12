@@ -6,10 +6,7 @@ export const context = async ({ req }) => {
 
   if (token) {
     try {
-      const { userId } = jwt.verify(
-        token,
-        process.env.JWT_SECRET || "your-secret-key"
-      );
+      const { userId } = jwt.verify(token, process.env.JWT_SECRET);
       const user = await prisma.user.findUnique({
         where: { id: userId },
       });

@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -38,6 +32,8 @@ model Blog {
   image    String
   author    User     @relation(fields: [authorId], references: [id], name: "UserBlogs") //relation field 
   authorId  String // Foreign Key or  scalar field
+  topicId    String?
+  topic      Topic?   @relation(fields: [topicId], references: [id], onDelete: SetNull)
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   createdAt DateTime @default(now())
@@ -54,15 +50,15 @@ model Program {
   updatedAt   DateTime @updatedAt
 }
 
-
 model Category {
   id         String   @id @default(uuid())
-  name       String // Academy, Teacher Zone
+  name       String   @unique// Academy, Teacher Zone
   type       CategoryType // New Enum Field (Program or Blog)
   programId  String?  // Nullable since a category can belong to a program or a blog
   program    Program? @relation(fields: [programId], references: [id], onDelete: Cascade)
   units      Unit[]
   blog       Blog[]
+  topics     Topic[]      // 👈 Add this reverse relation field
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
@@ -70,6 +66,15 @@ model Category {
 enum CategoryType {
   PROGRAM
   BLOG
+}
+model Topic {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  categoryId  String
+  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  blogs       Blog[]     // Related blogs
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Level {
@@ -98,3 +103,4 @@ model Unit {
   createdAt       DateTime @default(now()) // Timestamp for record creation
   updatedAt       DateTime @updatedAt     // Timestamp for last update
 }
+
